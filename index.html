@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kalkulator Nutrisi</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Kalkulator Nutrisi</h1>
+
+  <form>
+    <label for="food">Jenis Makanan:</label>
+    <select id="food">
+      <option value="roti">Roti</option>
+      <option value="nasi">Nasi</option>
+      <option value="telur">Telur</option>
+      <option value="dada-ayam">Dada Ayam</option>
+      <option value="daging-ayam">Daging Ayam</option>
+      <option value="daging-sapi">Daging Sapi</option>
+      <option value="daging-kambing">Daging Kambing</option>
+      <option value="tempe">Tempe</option>
+      <option value="tahu">Tahu</option>
+      <option value="kentang">Kentang</option>
+      <option value="pisang">Pisang</option>
+    </select>
+
+    <label for="weight">Berat (gram):</label>
+    <input type="text" id="weight">
+
+    <button type="button" id="tombol-tambahkan">Tambahkan</button>
+
+  </form>
+
+  <h2>Daftar Makanan:</h2>
+  <ul id="food-list"></ul>
+
+  <h2>Total Nutrisi:</h2>
+  <p>Total Kalori: <span id="total-calories">0</span> kalori</p>
+  <p>Total Protein: <span id="total-protein">0</span> gram</p>
+
+  <script>
+    let foodList = [];
+let totalCalories = 0;
+let totalProtein = 0;
+
+function calculate() {
+  const foodSelect = document.getElementById("food");
+  const foodWeight = document.getElementById("weight");
+
+  const selectedFood = foodSelect.value;
+  const weight = parseInt(foodWeight.value);
+
+  if (isNaN(weight) || weight <= 0) {
+    alert("Berat makanan harus angka positif!");
+    return;
+  }
+
+  let protein = 0;
+  let calories = 0;
+
+  switch (selectedFood) {
+    case "roti":
+      protein = 9 * (weight / 100);
+      calories = 250 * (weight / 100);
+      break;
+    case "nasi":
+      protein = 2 * (weight / 100);
+      calories = 140 * (weight / 100);
+      break;
+    case "telur":
+      protein = 13 * (weight / 100);
+      calories = 155 * (weight / 100);
+      break;
+    case "dada-ayam":
+      protein = 21 * (weight / 100);
+      calories = 165 * (weight / 100);
+      break;
+    case "daging-ayam":
+      protein = 20 * (weight / 100);
+      calories = 135 * (weight / 100);
+      break;
+    case "daging-sapi":
+      protein = 20 * (weight / 100);
+      calories = 250 * (weight / 100);
+      break;
+    case "daging-kambing":
+      protein = 20 * (weight / 100);
+      calories = 200 * (weight / 100);
+      break;
+    case "tempe":
+      protein = 18 * (weight / 100);
+      calories = 160 * (weight / 100);
+      break;
+    case "tahu":
+      protein = 8 * (weight / 100);
+      calories = 70 * (weight / 100);
+      break;
+    case "kentang":
+      protein = 2 * (weight / 100);
+      calories = 80 * (weight / 100);
+      break;
+    case "pisang":
+      protein = 1 * (weight / 100);
+      calories = 90 * (weight / 100);
+      break;
+    default:
+      alert("Jenis makanan tidak valid!");
+      return;
+  }
+
+  foodList.push({ food: selectedFood, weight: weight, protein: protein, calories: calories });
+
+  displayFoodList();
+  updateTotalCalories();
+  updateTotalProtein();
+
+  foodSelect.selectedIndex = 0;
+  foodWeight.value = "";
+}
+
+function displayFoodList() {
+  const foodListContainer = document.getElementById("food-list");
+  foodListContainer.innerHTML = "";
+
+  for (let food of foodList) {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${food.food} - ${food.weight} gram`;
+    foodListContainer.appendChild(listItem);
+  }
+}
+
+function updateTotalCalories() {
+    totalCalories = 0;
+  
+    for (let food of foodList) {
+      totalCalories += food.calories;
+    }
+  
+    const totalCaloriesElement = document.getElementById("total-calories");
+    totalCaloriesElement.textContent = totalCalories.toFixed(2);
+  }
+  
+  function updateTotalProtein() {
+    totalProtein = 0;
+  
+    for (let food of foodList) {
+      totalProtein += food.protein;
+    }
+  
+    const totalProteinElement = document.getElementById("total-protein");
+    totalProteinElement.textContent = totalProtein.toFixed(2);
+  }
+  
+  function handleClick() {
+    console.log("Button clicked!");
+    calculate();
+  }
+  document.getElementById("tombol-tambahkan").addEventListener("click", handleClick);
+
+
+  </script>
+</body>
+</html>
